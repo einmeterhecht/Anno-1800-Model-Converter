@@ -119,7 +119,7 @@ void convertToOBJ(std::filesystem::path inputPath, std::filesystem::path outputP
     try {
         RDMFile rdm(inputPath);
         rdm.toOBJFile(outputPath);
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
         spdlog::info("Something went wrong...");
         spdlog::error("{}", e.what());
         spdlog::info("When you think this is due to a problem with this converter please create an "
@@ -134,7 +134,7 @@ void convertToRDM(std::filesystem::path inputPath, std::filesystem::path outputP
         OBJFile obj(inputPath);
         RDMFile rdm(obj);
         rdm.toFile(outputPath, VER_FILE_VERSION_STR);
-    } catch (std::exception e) {
+    } catch (const std::exception& e) {
         spdlog::info("Something went wrong...");
         spdlog::error("{}", e.what());
         spdlog::info("When you think this is due to a problem with this converter please create an "
