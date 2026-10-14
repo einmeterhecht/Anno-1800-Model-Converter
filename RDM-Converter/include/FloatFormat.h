@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include <cstdio>
 #include <string>
 
@@ -7,12 +8,16 @@
 // the .obj output identical on every platform.
 inline std::string formatFloat(double value)
 {
+    // spelled out explicitly: msvcrt (MinGW) prints "nan" and "1.#INF" where UCRT and glibc differ
+    if (std::isnan(value))
+        return std::signbit(value) ? "-nan" : "nan";
+    if (std::isinf(value))
+        return value < 0 ? "-inf" : "inf";
+
     char exact[512];
     // a float has at most 149 fractional decimal digits, so this expansion is exact
     std::snprintf(exact, sizeof exact, "%.150f", value);
     std::string s = exact;
-    if (s.find('.') == std::string::npos) // nan / inf: same spelling as "%f"
-        return s;
 
     const size_t keep = s.find('.') + 7; // sign, integer part, dot, 6 decimals
     const bool   roundUp = s[keep] >= '5';
