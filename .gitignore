@@ -1,23 +1,5 @@
-# Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-bld/
-[Bb]in/
-[Bb]in-[Ii]nt
-[Oo]bj/
-[Ll]og/
-[Nn]otes
-
-# Visual Studio 2015/2017 cache/options directory
-.vs/
-
-# user files and log files
-*.log
-*.user
-*.aps
 # Makefile build output
 /build/
+
+# converter log
+*.log

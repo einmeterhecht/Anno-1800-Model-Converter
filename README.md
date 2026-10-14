@@ -18,4 +18,4 @@ git submodule update --init
 | `make test`            | converts all sample `.rdm` files and compares with `Unit-Tests/rdm-files/expected` |
 | `make test-windows`    | same, running the Windows binary through `wine`          |
 
-On Windows you can build natively with [w64devkit](https://github.com/skeeto/w64devkit) (`make` in its shell). The Visual Studio solution still works as well.
+On Windows you can build natively with [w64devkit](https://github.com/skeeto/w64devkit) (`make` in its shell).
