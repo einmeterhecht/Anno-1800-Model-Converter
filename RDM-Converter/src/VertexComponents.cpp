@@ -1,22 +1,23 @@
 #include "VertexComponents.h"
+#include "FloatFormat.h"
 #include <algorithm>
 
 template <> std::string GeometricVertex<uint16_t>::toOBJ()
 {
-    return "v " + std::to_string(Half::halfToFloat(x)) + " " + std::to_string(Half::halfToFloat(y))
-           + " " + std::to_string(Half::halfToFloat(z)) + "\n";
+    return "v " + formatFloat(Half::halfToFloat(x)) + " " + formatFloat(Half::halfToFloat(y))
+           + " " + formatFloat(Half::halfToFloat(z)) + "\n";
 }
 
 template <> std::string GeometricVertex<float>::toOBJ()
 {
-    return "v " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + "\n";
+    return "v " + formatFloat(x) + " " + formatFloat(y) + " " + formatFloat(z) + "\n";
 }
 
 template <> std::string Normal<uint8_t>::toOBJ()
 {
-    return "vn " + std::to_string(((x * 2.0F / 255.0F) - 1.0F)) + " "
-           + std::to_string(((y * 2.0F / 255.0F) - 1.0F)) + " "
-           + std::to_string(((z * 2.0F / 255.0F) - 1.0F)) + "\n";
+    return "vn " + formatFloat(((x * 2.0F / 255.0F) - 1.0F)) + " "
+           + formatFloat(((y * 2.0F / 255.0F) - 1.0F)) + " "
+           + formatFloat(((z * 2.0F / 255.0F) - 1.0F)) + "\n";
 }
 inline uint8_t limit(float value, float min, float max) {
 
@@ -43,12 +44,12 @@ template <> BiTangent<uint8_t> BiTangent<float>::scale()
 template <> std::string TextureVertex<uint16_t>::toOBJ()
 {
     // invert v to make the textures a fit
-    return "vt " + std::to_string(Half::halfToFloat(u)) + " "
-           + std::to_string(1.0F - Half::halfToFloat(v)) + "\n";
+    return "vt " + formatFloat(Half::halfToFloat(u)) + " "
+           + formatFloat(1.0F - Half::halfToFloat(v)) + "\n";
 }
 template <> std::string TextureVertex<float>::toOBJ()
 {
-    return "vt " + std::to_string(u) + " " + std::to_string(v) + "\n";
+    return "vt " + formatFloat(u) + " " + formatFloat(v) + "\n";
 }
 
 // let´s just make sure i don´t mess the sizes up anytime soon
