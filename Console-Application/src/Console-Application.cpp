@@ -1,14 +1,25 @@
 #include "OBJFile.h"
 #include "RDM-Converter.h"
 #include "Version.h"
-#include <shellapi.h>
 
 #include "RDMFile.h"
+#include <chrono>
+#include <cstdlib>
 #include <functional>
 #include <iostream>
 #include <numeric>
 #include <string>
+#include <string_view>
 #include <vector>
+
+#ifdef _WIN32
+#include <windows.h>
+#include <shellapi.h>
+#else
+#include <unistd.h>
+#endif
+
+static const char* issueUrl = "https://github.com/kskudlik/Anno-1800-Model-Converter/issues";
 
 class Timer
 {
@@ -44,15 +55,23 @@ class Timer
 static bool inConsole = true;
 bool        checkIfInConsole()
 {
+#ifdef _WIN32
     HWND  consoleWnd = GetConsoleWindow();
     DWORD dwProcessId;
     GetWindowThreadProcessId(consoleWnd, &dwProcessId);
     if (GetCurrentProcessId() == dwProcessId) {
-
+#else
+    if (!isatty(STDIN_FILENO)) {
+#endif
         inConsole = false;
         return false;
     }
     return true;
+}
+void waitForKey()
+{
+    std::cout << "Press Enter to continue..." << std::flush;
+    std::cin.get();
 }
 void printWelcome()
 {
@@ -76,18 +95,24 @@ void askForGithubIssue()
 {
 
     spdlog::critical("Something went terribly wrong.");
-    spdlog::critical("Please create an issue on Github: "
-                     "https://github.com/kskudlik/Anno-1800-Model-Converter/issues");
+    spdlog::critical("Please create an issue on Github: {}", issueUrl);
     std::string msg = "Do you want me to take you to the issue page?";
 
+#ifdef _WIN32
     if (MessageBoxA(NULL, msg.c_str(), VER_FILE_DESCRIPTION_STR,
                     MB_ICONQUESTION | MB_YESNO | MB_SYSTEMMODAL)
         == IDYES) {
-        auto result = ShellExecuteA(nullptr, "open",
-                                    "https://github.com/kskudlik/Anno-1800-Model-Converter/issues",
-                                    nullptr, nullptr, SW_SHOWNORMAL);
-        TerminateProcess(GetCurrentProcess(), 0);
+        ShellExecuteA(nullptr, "open", issueUrl, nullptr, nullptr, SW_SHOWNORMAL);
+        std::exit(0);
     }
+#else
+    std::cout << msg << " [y/N] " << std::flush;
+    std::string answer;
+    if (std::getline(std::cin, answer) && (answer == "y" || answer == "Y")) {
+        std::system(("xdg-open '" + std::string(issueUrl) + "'").c_str());
+        std::exit(0);
+    }
+#endif
 }
 void convertToOBJ(std::filesystem::path inputPath, std::filesystem::path outputPath)
 {
@@ -126,11 +151,12 @@ int main(int argc, char** argv)
     Timer tick;
 
     checkIfInConsole();
-    if (argc < 2 || argv[1] == "h" || argv[1] == "help" || argv[1] == "-help" || argv[1] == "-h"
-        || argv[1] == "--help" || argv[1] == "--h") {
+    std::string_view arg = argc > 1 ? argv[1] : "";
+    if (argc < 2 || arg == "h" || arg == "help" || arg == "-help" || arg == "-h" || arg == "--help"
+        || arg == "--h") {
         printUsage();
         if (!inConsole)
-            system("pause");
+            waitForKey();
         if(argc < 2) return EXIT_FAILURE;
         return EXIT_SUCCESS;
     }
@@ -150,7 +176,7 @@ int main(int argc, char** argv)
                           inputPath.filename().string(), inputPath.extension().string());
             printUsage();
             if (!inConsole)
-                system("pause");
+                waitForKey();
             return EXIT_FAILURE;
         }
 
