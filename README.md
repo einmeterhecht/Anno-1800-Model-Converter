@@ -2,19 +2,21 @@
 
 This model converter for the Anno Series - allows you to convert from and into their proprietary .rdm format
 
+---
+
+This repo is a fork of [kskudlik's RDM <-> OBJ Converter](ttps://github.com/kskudlik/Anno-1800-Model-Converter) with a vibecoded build system to compile on linux.
+
 ## Building
 
-Requires `g++` (or `clang++`) and `make`. Clone with submodules (spdlog is a header-only dependency):
+Run `git submodule update --init` once to fetch the spdlog dependency.
 
-```
-git submodule update --init
-```
+Requires `g++` (or `clang++`) and `make`.
 
-| Command                | Result                                                   |
+| Command                | Builds                                                   |
 | ---------------------- | -------------------------------------------------------- |
 | `make`                 | `build/linux/rdm-converter`                              |
 | `make windows`         | `build/windows/rdm-converter.exe` (cross-compiled, needs `x86_64-w64-mingw32-g++` and `windres`, e.g. `apt install mingw-w64`) |
 | `make test`            | converts all sample `.rdm` files and compares with `Unit-Tests/rdm-files/expected` |
 | `make test-windows`    | same, running the Windows binary through `wine`          |
 
-On Windows you can build natively with [w64devkit](https://github.com/skeeto/w64devkit) (`make` in its shell).
+On Windows, you can build natively with [w64devkit](https://github.com/skeeto/w64devkit) (`make` in its shell).
