@@ -9,6 +9,7 @@
 #include <fstream>
 #include <map>
 #include <sstream>
+#include <stdexcept>
 
 class RDMFile
 {
@@ -35,14 +36,14 @@ class RDMFile
     std::string verticesToOBJ() noexcept;
     static void convertDirectoryToOBJ(std::filesystem::path inputDirectory,
                                       std::filesystem::path outputDirectory);
-    struct UnsupportedVertexFormat : public std::exception {
+    struct UnsupportedVertexFormat : public std::runtime_error {
         std::filesystem::path path;
         unsigned int          verticesSize;
         unsigned int          trianglesSize;
         UnsupportedVertexFormat(uint32_t vertexSize, uint32_t triangleSize,
                                 std::filesystem::path path,
                                 const char*           msg = "UnsupportedVertexFormat") noexcept
-            : std::exception(msg)
+            : std::runtime_error(msg)
             , verticesSize(vertexSize)
             , trianglesSize(triangleSize)
             , path(path)
@@ -63,10 +64,10 @@ class RDMFile
             return path;
         }
     };
-    struct FileError : public std::exception {
+    struct FileError : public std::runtime_error {
         std::filesystem::path path;
         FileError(std::filesystem::path path, const char* msg = "FileError") noexcept
-            : std::exception(msg)
+            : std::runtime_error(msg)
             , path(path)
         {
         }

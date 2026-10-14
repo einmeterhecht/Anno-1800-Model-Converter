@@ -4,6 +4,7 @@
 #include <fstream>
 #include <map>
 #include <sstream>
+#include <stdexcept>
 
 OBJFile::OBJFile(std::filesystem::path filePath)
 {
@@ -14,7 +15,7 @@ OBJFile::OBJFile(std::filesystem::path filePath)
     uint32_t      f1a, f1b, f1c, f2a, f2b, f2c, f3a, f3b, f3c;
     std::ifstream ifstr(filePath);
     if (!ifstr)
-        throw std::exception("Can't open file");
+        throw std::runtime_error("Can't open file");
     while (getline(ifstr, line)) {
         if (line.substr(0, 2) == "v ") {
             std::istringstream iss(line);
@@ -37,11 +38,11 @@ OBJFile::OBJFile(std::filesystem::path filePath)
             if (std::size_t delimiter = fa.find('/'); delimiter != std::string::npos) {
                 std::size_t delimiter2 = fa.find('/', delimiter + 1);
                 if (delimiter2 == delimiter + 1)
-                    throw std::exception("texture missing"); // TODO
+                    throw std::runtime_error("texture missing"); // TODO
                 if (delimiter2 == std::string::npos)
-                    throw std::exception("normal missing"); // TODO
+                    throw std::runtime_error("normal missing"); // TODO
             } else {
-                throw std::exception("texture, normal missing"); // TODO
+                throw std::runtime_error("texture, normal missing"); // TODO
             }
             std::istringstream f1(fa);
             f1 >> f1a >> c >> f1b >> c >> f1c;
@@ -55,13 +56,13 @@ OBJFile::OBJFile(std::filesystem::path filePath)
         }
     }
     if (!this->f.size())
-        throw std::exception("faces missing"); // TODO
+        throw std::runtime_error("faces missing"); // TODO
     if (!this->v.size())
-        throw std::exception("geometric missing"); // TODO
+        throw std::runtime_error("geometric missing"); // TODO
     if (!this->vn.size())
-        throw std::exception("normals missing"); // TODO
+        throw std::runtime_error("normals missing"); // TODO
     if (!this->vt.size())
-        throw std::exception("textures missing"); // TODO
+        throw std::runtime_error("textures missing"); // TODO
 
     spdlog::info("GeometricVerticesCount: {} - NormalCount: {} - TextureCount: {} - FaceCount: {}",
                  this->v.size(), this->vn.size(), this->vt.size(), this->f.size());

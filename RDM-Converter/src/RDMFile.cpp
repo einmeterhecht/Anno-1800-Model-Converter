@@ -290,7 +290,7 @@ RDMFile::RDMFile(OBJFile& obj)
     }
 
     if (rawTriangles.size() > 65535) {
-        throw std::exception("more than 65535 faces; not yet implemented");
+        throw std::runtime_error("more than 65535 faces; not yet implemented");
     }
     Triangle<uint16_t>* triangles = new Triangle<uint16_t>[rawTriangles.size()];
     for (int i = 0; i < rawTriangles.size(); i++) {
