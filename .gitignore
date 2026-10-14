@@ -19,3 +19,5 @@ bld/
 *.log
 *.user
 *.aps
+# Makefile build output
+/build/
