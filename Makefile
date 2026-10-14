@@ -43,8 +43,14 @@ $(RES): Console-Application/Console-Application.rc
 windows:
 	$(MAKE) CXX=x86_64-w64-mingw32-g++ WINDRES=x86_64-w64-mingw32-windres
 
+test: $(BIN)
+	$(PYTHON) Unit-Tests/unittest.py $(BIN)
+
+test-windows: windows
+	$(PYTHON) Unit-Tests/unittest.py build/windows/rdm-converter.exe wine
+
 clean:
 	rm -rf build
 
 -include $(OBJ:.o=.d)
-.PHONY: all windows clean
+.PHONY: all windows test test-windows clean

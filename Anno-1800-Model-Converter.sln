@@ -5,11 +5,6 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RDM-Converter", "RDM-Converter\RDM-Converter.vcxproj", "{67BF8499-3D23-4AAA-AE74-04878DC1E798}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unit-Tests", "Unit-Tests\Unit-Tests.vcxproj", "{29ADC51E-E94C-4E73-89A9-A92202C6B3F1}"
-	ProjectSection(ProjectDependencies) = postProject
-		{67BF8499-3D23-4AAA-AE74-04878DC1E798} = {67BF8499-3D23-4AAA-AE74-04878DC1E798}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Console-Application", "Console-Application\Console-Application.vcxproj", "{A8387833-2342-4834-BDE1-BE4FF1FD34FD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{67BF8499-3D23-4AAA-AE74-04878DC1E798} = {67BF8499-3D23-4AAA-AE74-04878DC1E798}
@@ -31,14 +26,6 @@ Global
 		{67BF8499-3D23-4AAA-AE74-04878DC1E798}.Release|x64.Build.0 = Release|x64
 		{67BF8499-3D23-4AAA-AE74-04878DC1E798}.Release|x86.ActiveCfg = Release|Win32
 		{67BF8499-3D23-4AAA-AE74-04878DC1E798}.Release|x86.Build.0 = Release|Win32
-		{29ADC51E-E94C-4E73-89A9-A92202C6B3F1}.Debug|x64.ActiveCfg = Debug|x64
-		{29ADC51E-E94C-4E73-89A9-A92202C6B3F1}.Debug|x64.Build.0 = Debug|x64
-		{29ADC51E-E94C-4E73-89A9-A92202C6B3F1}.Debug|x86.ActiveCfg = Debug|Win32
-		{29ADC51E-E94C-4E73-89A9-A92202C6B3F1}.Debug|x86.Build.0 = Debug|Win32
-		{29ADC51E-E94C-4E73-89A9-A92202C6B3F1}.Release|x64.ActiveCfg = Release|x64
-		{29ADC51E-E94C-4E73-89A9-A92202C6B3F1}.Release|x64.Build.0 = Release|x64
-		{29ADC51E-E94C-4E73-89A9-A92202C6B3F1}.Release|x86.ActiveCfg = Release|Win32
-		{29ADC51E-E94C-4E73-89A9-A92202C6B3F1}.Release|x86.Build.0 = Release|Win32
 		{A8387833-2342-4834-BDE1-BE4FF1FD34FD}.Debug|x64.ActiveCfg = Debug|x64
 		{A8387833-2342-4834-BDE1-BE4FF1FD34FD}.Debug|x64.Build.0 = Debug|x64
 		{A8387833-2342-4834-BDE1-BE4FF1FD34FD}.Debug|x86.ActiveCfg = Debug|Win32
