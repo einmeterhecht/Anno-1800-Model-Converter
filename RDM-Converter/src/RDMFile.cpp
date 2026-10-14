@@ -49,8 +49,8 @@ RDMFile::RDMFile(std::filesystem::path inputPath)
         verticesSize  = *(uint32_t*)&file[offsetToVertices - 4];
         verticesCount = *(uint32_t*)&file[offsetToVertices - 8];
 
-        trianglesCount = *(unsigned long*)&file[offsetToTriangles - 8] / 3;
-        trianglesSize  = *(unsigned long*)&file[offsetToTriangles - 4];
+        trianglesCount = *(uint32_t*)&file[offsetToTriangles - 8] / 3;
+        trianglesSize  = *(uint32_t*)&file[offsetToTriangles - 4];
 
         switch (verticesSize) {
             case sizeof(P4h): {
@@ -139,7 +139,7 @@ std::string RDMFile::trianglesToOBJ()
     if (trianglesSize == 4) {
         Triangle<uint32_t>* triangles = (Triangle<uint32_t>*)this->triangles;
         for (uint32_t i = 0; i < trianglesCount; i++) {
-            if ((materials[materialIndex].offset / 3) == i) {
+            if (materialIndex < materials.size() && materials[materialIndex].offset / 3 == i) {
                 out += "g " + std::to_string(materials[materialIndex].index) + "\n" + "usemtl "
                        + std::to_string(materials[materialIndex].index) + "\n";
                 materialIndex++;
@@ -150,7 +150,7 @@ std::string RDMFile::trianglesToOBJ()
     } else if (trianglesSize == 2) {
         Triangle<uint16_t>* triangles = (Triangle<uint16_t>*)this->triangles;
         for (uint32_t i = 0; i < trianglesCount; i++) {
-            if ((materials[materialIndex].offset / 3) == i) {
+            if (materialIndex < materials.size() && materials[materialIndex].offset / 3 == i) {
                 out += "g " + std::to_string(materials[materialIndex].index) + "\n" + "usemtl "
                        + std::to_string(materials[materialIndex].index) + "\n";
                 materialIndex++;
@@ -165,7 +165,8 @@ std::string RDMFile::trianglesToOBJ()
 }
 bool RDMFile::toOBJFile(std::filesystem::path outputPath)
 {
-    std::filesystem::create_directories(outputPath.parent_path());
+    if (!outputPath.parent_path().empty())
+        std::filesystem::create_directories(outputPath.parent_path());
     std::ofstream obj;
     obj.open(outputPath);
     obj << this->verticesToOBJ();
